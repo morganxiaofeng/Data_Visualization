@@ -86,6 +86,7 @@ color_range = [
     ]
 
 df['fill_color'] = (df[variable]/df[variable].max()).replace(np.nan,0).apply(color_scale)
+df['variable'] = df[variable]
 
 if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
     st.success(f'Date: {sel_date}')
@@ -118,7 +119,6 @@ polygon_layer = pdk.Layer(
 view_state = pdk.ViewState(latitude=0, longitude=0, zoom=1, bearing=0, pitch=0)
 
 # Render
-variable = eval(variable)
 tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>Political Index:</b> {variable} <br />"}
 r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
 
