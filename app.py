@@ -35,3 +35,5 @@ background = alt.Chart(df).mark_geoshape()\
         height=400,
         title='Title'
     ).interactive()
+
+st.altair_chart(background)
