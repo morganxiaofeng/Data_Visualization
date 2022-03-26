@@ -43,7 +43,7 @@ def display_sidebar(data):
 
 
 sel_region, sel_index, sel_date = display_sidebar(data)
-
+cord_dict = {'Stringency Index': 'World': [0,0], 'Africa':[8.7832,34.5085], 'Asia':[100.6197,34.0479], 'Europe': [15.2551,54.5260], 'North America':[105.2551,54.5260], 'Oceania': [140.0188, 22.7359], 'South America':[55.4915, 8.7832]}
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
 variable = index_dict[sel_index]
 def color_scale(val):
@@ -113,10 +113,10 @@ polygon_layer = pdk.Layer(
             get_line_color=[255, 255, 255],
             auto_highlight=True,
             pickable=True,
-        )
+        
 
 # Set the viewport location
-view_state = pdk.ViewState(latitude=0, longitude=0, zoom=1, bearing=0, pitch=0)
+view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1, bearing=0, pitch=0)
 
 # Render
 tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>Political Index:</b> {variable} <br />"}
