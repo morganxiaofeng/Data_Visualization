@@ -152,6 +152,51 @@ r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='l
 st.pydeck_chart(r, use_container_width=True)
 
 
+data = pd.melt(chart_data.reset_index(), id_vars=["index"])
+
+# Horizontal stacked bar chart
+
+sel_vac = 'Booster Coverage'    
+vac_dict = {'Booster Coverage': ['booster', 'booster_coverage'], 'Fully-Vaccinated Coverage': ['fully', 'fully_coverage'], 'Vaccinated-Once Coverage': ['once', 'once_coverage']}
+variable_vac = vac_dict[sel_vac][0]
+
+coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
+df_vac = coverage.loc[coverage.location.isin(coord_dict.keys())]
+df_vac['date'] = pd.to_datetime(df_vac['date'])
+df_vac['coordinates'] = df_vac['location'].apply(lambda x: coord_dict[x])
+
+df_vac['booster_coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
+df_vac['booster'] = max_scale(df_vac['booster_coverage'])
+df_vac['fully_coverage'] = ((df_vac['people_fully_vaccinated']-df_vac['total_boosters'])/df_vac['people_vaccinated']).replace(np.nan,0)
+df_vac['fully'] = max_scale(df_vac['fully_coverage'])
+df_vac['once_coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
+df_vac['once'] = max_scale(df_vac['once_coverage'])
+df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
+df_vac['vac'] = sel_vac
+
+df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
+df_vac = df_vac.dropna(axis=0)
+
+df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['booster_coverage','fully_coverage','once_coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
+df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
+
+if sel_region
+bars = alt.Chart(source).mark_bar().encode(
+    x=alt.X('sum(yield):Q', stack='zero'),
+    y=alt.Y('variety:N'),
+    color=alt.Color('site')
+)
+
+text = alt.Chart(source).mark_text(dx=-15, dy=3, color='white').encode(
+    x=alt.X('sum(yield):Q', stack='zero'),
+    y=alt.Y('variety:N'),
+    detail='site:N',
+    text=alt.Text('sum(yield):Q', format='.1f')
+)
+
+st.altair_chart(bars + text, use_container_width=True)
+
+
 
 
 
@@ -159,25 +204,6 @@ st.pydeck_chart(r, use_container_width=True)
 
 if sel_vac != None:
     
-    vac_dict = {'Booster Coverage': ['booster', 'booster_coverage'], 'Fully-Vaccinated Coverage': ['fully', 'fully_coverage'], 'Vaccinated-Once Coverage': ['once', 'once_coverage']}
-    variable_vac = vac_dict[sel_vac][0]
-
-    coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
-    df_vac = coverage.loc[coverage.location.isin(coord_dict.keys())]
-    df_vac['date'] = pd.to_datetime(df_vac['date'])
-    df_vac['coordinates'] = df_vac['location'].apply(lambda x: [coord_dict[x][1], coord_dict[x][0]])
-
-    df_vac['booster_coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['booster'] = max_scale(df_vac['booster_coverage'])
-    df_vac['fully_coverage'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['fully'] = max_scale(df_vac['fully_coverage'])
-    df_vac['once_coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['once'] = max_scale(df_vac['once_coverage'])
-    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]].apply(lambda x : round(x*100, 2))
-    df_vac['vac'] = sel_vac
-
-    df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
-    df_vac = df_vac.dropna(axis=0)
     # Define a layer to display on a map
     
     scatter_layer = pdk.Layer(
