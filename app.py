@@ -46,29 +46,28 @@ def display_sidebar(data):
 
 
 sel_region, sel_index, sel_date = display_sidebar(data)
+
+###########################################################
+
 cord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
              'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-55.4915, -8.7832]}
-index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
-variable = index_dict[sel_index]
+
 def color_scale(val):
     for i, b in enumerate(breaks):
         if val <= b:
             return color_range[i]
     return color_range[i]
 
-index = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'stringency_index', 'gdp_per_capita', 'human_development_index']].rename(columns={'iso_code':'adm0_a3'})
-
 src_geo = 'countries.json'
 json_geo = pd.read_json(src_geo)
-df = pd.DataFrame()
+geo = pd.DataFrame()
 
 # Parse the geometry out in Pandas
-df["coordinates"] = json_geo["features"].apply(lambda row: row["geometry"]["coordinates"])
-df["name"] = json_geo["features"].apply(lambda row: row["properties"]["name"])
-df["adm0_a3"] = json_geo["features"].apply(lambda row: row["properties"]["adm0_a3"])
-df["admin"] = json_geo["features"].apply(lambda row: row["properties"]["admin"])
-df = pd.merge(index, df, on='adm0_a3', how='left')
-df['date'] = pd.to_datetime(df['date'])
+geo["coordinates"] = json_geo["features"].apply(lambda row: row["geometry"]["coordinates"])
+geo["name"] = json_geo["features"].apply(lambda row: row["properties"]["name"])
+geo["adm0_a3"] = json_geo["features"].apply(lambda row: row["properties"]["adm0_a3"])
+geo["admin"] = json_geo["features"].apply(lambda row: row["properties"]["admin"])
+
 
 breaks = [.0, .2, .4, .6, .8, 1]
 color_range = [
@@ -88,6 +87,15 @@ color_range = [
     # [117,107,177],
     # [84,39,143],
     ]
+
+###########################################################
+
+index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
+variable = index_dict[sel_index]
+
+index = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'stringency_index', 'gdp_per_capita', 'human_development_index']].rename(columns={'iso_code':'adm0_a3'})
+df = pd.merge(index, geo, on='adm0_a3', how='left')
+df['date'] = pd.to_datetime(df['date'])
 
 df['fill_color'] = (df[variable]/df[variable].max()).replace(np.nan,0).apply(color_scale)
 df['variable'] = df[variable]
@@ -118,7 +126,7 @@ polygon_layer = pdk.Layer(
 
 # Set the viewport location
 if sel_region == 'World':
-    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0, bearing=0, pitch=0)
+    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0.5, bearing=0, pitch=0)
 else:
     view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
 
