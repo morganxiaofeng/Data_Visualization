@@ -152,7 +152,7 @@ r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='l
 st.pydeck_chart(r, use_container_width=True)
 
 
-data = pd.melt(chart_data.reset_index(), id_vars=["index"])
+
 
 # Horizontal stacked bar chart
 
