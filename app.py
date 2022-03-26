@@ -57,6 +57,37 @@ def display_sidebar(data):
 
 sel_region, sel_index, sel_date, sel_vac = display_sidebar(data)
 
+# Heatmap
+vac_case = pd.read_csv('COVID_continent_income.csv').loc[:,['location', 'date', 'new_vaccinations_smoothed', 'new_cases_smoothed']].rename(columns={'iso_code':'adm0_a3'})
+df_vac_case = vac_case.loc[coverage.location.isin(coord_dict.keys())].rename(columns={'location': 'Continent', 'date': 'Date', 'new_vaccinations_smoothed': 'New Vaccinations Smoothed', 'new_cases_smoothed': 'New Cases Smoothed'})
+df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
+df_vac_case = df_vac_case.fillna(0)
+dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist()
+
+vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
+                                x=alt.X('Date:O', sort=dates, title='date'),
+                                y=alt.Y('Continent'),
+                                color=alt.Color('New Vaccinations Smoothed',scale=alt.Scale(scheme='blues')),
+                                opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
+                                tooltip=df_vac_case.columns
+                                ).configure_scale(
+                                    bandPaddingInner=.1
+                                    ).add_selection(hover)
+
+st.altair_chart(vac_heatmap, use_container_width=True)
+
+case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
+                                x=alt.X('Date:O', sort=dates, title='date'),
+                                y=alt.Y('Continent'),
+                                color=alt.Color('New Cases Smoothed',scale=alt.Scale(scheme='blues')),
+                                opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
+                                tooltip=df_vac_case.columns
+                                ).configure_scale(
+                                    bandPaddingInner=.1
+                                    ).add_selection(hover)
+
+st.altair_chart(case_heatmap, use_container_width=True)
+
 ###########################################################
 
 coord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
