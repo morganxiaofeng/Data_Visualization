@@ -60,7 +60,7 @@ st.sidebar.markdown('Choose a startdate (e.g., 2020-08-15)')
 sel_date = st.sidebar.date_input('Date:', datetime.date(2021,1,1))
 st.write(sel_date)
 
-if sel_date <= df['date'].unique()[-1] and sel_date >= df['date'].unique()[0]:
+if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
     st.success(f'Date: {sel_date}')
 else:
     st.error('Error: The date should be in Year 2021.')
