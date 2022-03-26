@@ -124,9 +124,9 @@ date_visible = [dates[idx] for idx in quantiles]
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
-                                x=alt.X('Date:O', sort=dates, axis=alt.Axis(values=date_visible,labelAngle=0)),
+                                x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
-                                color=alt.Color('New Vaccinations Smoothed:Q',scale=alt.Scale(scheme='blues')),
+                                color=alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
@@ -136,7 +136,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
 st.altair_chart(vac_heatmap, use_container_width=True)
 
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
-                                x=alt.X('week(Date):O', sort=dates, title='date'),
+                                x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
                                 color=alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
