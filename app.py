@@ -118,7 +118,7 @@ polygon_layer = pdk.Layer(
 view_state = pdk.ViewState(latitude=0, longitude=0, zoom=1, bearing=0, pitch=0)
 
 # Render
-tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>Political Index:</b> {variable} <br />"}
+tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>Political Index:</b> {eval(variable)} <br />"}
 r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
 
 st.pydeck_chart(r, use_container_width=True)
