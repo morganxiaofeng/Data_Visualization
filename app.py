@@ -36,7 +36,10 @@ def display_sidebar(data):
     st.sidebar.header('Choose a date below')
     st.sidebar.markdown('Choose a date (e.g., 2020-08-15)')
     sel_date = st.sidebar.date_input('Date:', datetime.date(2021,12,31))
-    st.write(sel_date)
+    if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
+        st.success(f'Date: {sel_date}')
+    else:
+        st.error('Error: The date should be in Year 2021.')
      
     return sel_region, sel_index, sel_date
 
@@ -90,10 +93,6 @@ df['fill_color'] = (df[variable]/df[variable].max()).replace(np.nan,0).apply(col
 df['variable'] = df[variable]
 df['index'] = sel_index
 
-if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
-    st.success(f'Date: {sel_date}')
-else:
-    st.error('Error: The date should be in Year 2021.')
 df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna()
 
@@ -118,7 +117,10 @@ polygon_layer = pdk.Layer(
         
 
 # Set the viewport location
-view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=2, bearing=0, pitch=0)
+if sel_region = 'World':
+    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0, bearing=0, pitch=0)
+else:
+    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
 
 # Render
     
