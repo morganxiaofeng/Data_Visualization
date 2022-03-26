@@ -166,9 +166,12 @@ if sel_vac != None:
     df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
     df_vac['date'] = pd.to_datetime(df_vac['date'])
 
-    df_vac['booster'] = max_scale((df_vac['total_boosters']/df_vac['people_vaccinated']))
-    df_vac['fully'] = max_scale(df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'])
-    df_vac['once'] = max_scale((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'])
+    df_vac['booster'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['booster'] = max_scale(df_vac['booster'])
+    df_vac['fully'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['fully'] = max_scale(df_vac['fully'])
+    df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['once'] = max_scale(df_vac['once'])
     df_vac['variable_vac'] = df_vac[variable_vac]
     df_vac['vac'] = sel_vac
 
