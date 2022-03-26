@@ -52,8 +52,6 @@ color_range = [
 
 df['fill_color'] = (df['stringency_index']/df['stringency_index'].max()).replace(np.nan,0).apply(color_scale)
 
-st.altair_chart(background)
-
 # Choose a startdate to display
 st.sidebar.header('Choose a startdate below')
 st.sidebar.markdown('Choose a startdate (e.g., 2020-08-15)')
