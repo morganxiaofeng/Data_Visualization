@@ -121,7 +121,7 @@ df['variable'] = df[variable]
 df['index'] = sel_index
 
 df = df.loc[df.date == np.datetime64(sel_date)]
-
+df = df.dropna(axis=0)
 # Define a layer to display on a map
 
 polygon_layer = pdk.Layer(
