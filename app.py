@@ -10,7 +10,7 @@ resp = requests.get(url)
 country_info = resp.json()
 country_info = pd.DataFrame(country_info)
 
-stringency = pd.read_csv('https://github.com/morganxiaofeng/Data_Visualization/blob/main/owid-covid-data_final.csv').loc[:,['iso_code','location','date','stringency_index']]
+stringency = pd.read_csv('https://raw.githubusercontent.com/morganxiaofeng/Data_Visualization/main/owid-covid-data_final.csv').loc[:,['iso_code','location','date','stringency_index']]
 
 df = stringency[stringency['iso_code'].isin(country_info['alpha-3'])]
 df = df.loc[df.date=='2021/12/31']
