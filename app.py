@@ -16,11 +16,6 @@ def color_scale(val):
             return color_range[i]
     return color_range[i]
 
-url = "https://raw.githubusercontent.com/lukes/ISO-3166-Countries-with-Regional-Codes/master/all/all.json"
-resp = requests.get(url)
-country_info = resp.json()
-country_info = pd.DataFrame(country_info)
-
 stringency = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code','location','date','stringency_index']].rename(columns={'iso_code':'adm0_a3'})
 
 src_geo = 'countries.json'
@@ -59,14 +54,14 @@ df['fill_color'] = (df['stringency_index']/df['stringency_index'].max()).replace
 # Choose a startdate to display
 st.sidebar.header('Choose a startdate below')
 st.sidebar.markdown('Choose a startdate (e.g., 2020-08-15)')
-sel_date = st.sidebar.date_input('Date:', datetime.date(2021,1,1))
+sel_date = st.sidebar.date_input('Date:', datetime.date(2021,12,31))
 st.write(sel_date)
 
 if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
     st.success(f'Date: {sel_date}')
 else:
     st.error('Error: The date should be in Year 2021.')
-df = df.loc[df.date == sel_date]
+df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna()
 
 # Define a layer to display on a map
