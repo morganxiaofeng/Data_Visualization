@@ -177,7 +177,7 @@ if sel_vac != None:
     df_vac['vac'] = sel_vac
 
     df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
-
+    df_vac = df_vac.dropna(axis=0)
     # Define a layer to display on a map
     
     scatter_layer = pdk.Layer(
