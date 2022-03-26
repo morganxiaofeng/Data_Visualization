@@ -31,6 +31,7 @@ df["name"] = json_geo["features"].apply(lambda row: row["properties"]["name"])
 df["adm0_a3"] = json_geo["features"].apply(lambda row: row["properties"]["adm0_a3"])
 df["admin"] = json_geo["features"].apply(lambda row: row["properties"]["admin"])
 df = pd.merge(stringency, df, on='adm0_a3', how='left')
+df['date'] = pd.to_datetime(df['date'])
 
 breaks = [.0, .2, .4, .6, .8, 1]
 color_range = [
