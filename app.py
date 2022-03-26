@@ -120,9 +120,9 @@ dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
-                                x=alt.X('Date:O', sort=dates, title='date', format = ("%b %Y")),
+                                x=alt.X('month(Date):O', sort=dates, title='date'),
                                 y=alt.Y('Continent'),
-                                color=alt.Color('New Vaccinations Smoothed',scale=alt.Scale(scheme='blues')),
+                                color=alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
@@ -132,9 +132,9 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
 st.altair_chart(vac_heatmap, use_container_width=True)
 
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
-                                x=alt.X('Date:O', sort=dates, title='date', format = ("%b %Y")),
+                                x=alt.X('month(Date):O', sort=dates, title='date'),
                                 y=alt.Y('Continent'),
-                                color=alt.Color('New Cases Smoothed',scale=alt.Scale(scheme='blues')),
+                                color=alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
