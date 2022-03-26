@@ -116,11 +116,15 @@ df_vac_case = vac_case.loc[vac_case.location.isin(coord_dict.keys())].rename(col
 df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
 df_vac_case = df_vac_case.fillna(0)
 dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist()
+presets = [0,.25,.5,.75,1]
+quantiles = np.quantile(np.arange(0,len(dates)),presets).tolist()
+quantiles = [int(np.floor(q)) for q in quantiles]
+date_visible = [dates[idx] for idx in quantiles]
 
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
-                                x=alt.X('week(Date):O', sort=dates, title='date'),
+                                x=alt.X('Date:O', sort=dates, axis=alt.Axis(values=date_visible,labelAngle=0)),
                                 y=alt.Y('Continent'),
                                 color=alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
