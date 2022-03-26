@@ -19,7 +19,7 @@ def display_sidebar(data):
     # 0) Need to reset data
     st.sidebar.markdown('Reset dataset?')
     if st.sidebar.button(label='Clear cache'):
-        st.caching.clear_cache()
+        st.legacy_caching.clear_cache()
         st.experimental_rerun()
 
     # 1) Choose a Region/Country to display
