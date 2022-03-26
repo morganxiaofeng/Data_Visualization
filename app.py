@@ -194,7 +194,7 @@ if sel_vac != None:
     radius_max_pixels=100,
     line_width_min_pixels=1,
     get_position="coordinates",
-    get_radius=5000000000000,
+    get_radius=500000000,
     get_fill_color=variable_vac,
     get_line_color=[0, 0, 0],
 )
