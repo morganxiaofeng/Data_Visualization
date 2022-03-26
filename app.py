@@ -43,7 +43,7 @@ def display_sidebar(data):
 
 
 sel_region, sel_index, sel_date = display_sidebar(data)
-cord_dict = {'Stringency Index': 'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[100.6197,34.0479], 'Europe':[15.2551,54.5260], 
+cord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[100.6197,34.0479], 'Europe':[15.2551,54.5260], 
              'North America':[105.2551,54.5260], 'Oceania':[140.0188, 22.7359], 'South America':[55.4915, 8.7832]}
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
 variable = index_dict[sel_index]
