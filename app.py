@@ -126,7 +126,7 @@ hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True,
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('Date:O', sort=dates, axis=alt.Axis(values=date_visible,labelAngle=0)),
                                 y=alt.Y('Continent'),
-                                color=alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')),
+                                color=alt.Color('New Vaccinations Smoothed:Q',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
