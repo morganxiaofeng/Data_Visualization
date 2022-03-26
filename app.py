@@ -173,7 +173,7 @@ if sel_vac != None:
     df_vac['fully'] = max_scale(df_vac['fully_coverage'])
     df_vac['once_coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
     df_vac['once'] = max_scale(df_vac['once_coverage'])
-    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
+    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]].apply(lambda x : round(x*100, 2))
     df_vac['vac'] = sel_vac
 
     df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
@@ -193,12 +193,12 @@ if sel_vac != None:
     line_width_min_pixels=1,
     get_position="coordinates",
     get_radius=50000,
-    get_fill_color='variable_vac',
+    get_fill_color=variable_vac,
     get_line_color=[0, 0, 0])
 
     # Render
 
-    tooltipscatter = {"html": "<b>Continent:</b> {location} <br /><b>{vac}:</b> {variable_vac}"}
+    tooltipscatter = {"html": "<b>Continent:</b> {location} <br /><b>{vac}:</b> {variable_vac}%"}
 
     scatter = pdk.Deck(layers=[scatter_layer], initial_view_state=view_state, map_style='light', tooltip=tooltipscatter)
 
