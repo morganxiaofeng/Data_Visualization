@@ -42,7 +42,7 @@ def display_sidebar(data):
 
 
 
-
+sel_region, sel_index, sel_date = display_sidebar(data)
 
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
 def color_scale(val):
