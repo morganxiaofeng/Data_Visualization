@@ -40,8 +40,18 @@ def display_sidebar(data):
         st.success(f'Date: {sel_date}')
     else:
         st.error('Error: The date should be in Year 2021.')
+    
+    # 4) Compare with Political Index?
+    if sel_index:
+        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Fully-Vaccinated Coverage and Vaccinated-Once Coverage)?')
+        check = st.sidebar.checkbox('Yes')
+        if check:
+            st.sidebar.markdown('Choose a stage of the vaccination (e.g., Booster Coverage)')
+            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Fully-Vaccinated Coverage', 'Vaccinated-Once Coverage'])
+        else:
+            sel_vac = None
      
-    return sel_region, sel_index, sel_date
+    return sel_region, sel_index, sel_date, sel_vac
 
 
 
@@ -50,7 +60,13 @@ sel_region, sel_index, sel_date = display_sidebar(data)
 ###########################################################
 
 cord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
-             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-55.4915, 8.7832]}
+             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-59.0625, -14.6048]}
+
+# Set the viewport location
+if sel_region == 'World':
+    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0.5, bearing=0, pitch=0)
+else:
+    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
 
 def color_scale(val):
     for i, b in enumerate(breaks):
@@ -124,15 +140,59 @@ polygon_layer = pdk.Layer(
             pickable=True)
         
 
-# Set the viewport location
-if sel_region == 'World':
-    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0.5, bearing=0, pitch=0)
-else:
-    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
-
 # Render
     
 tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>{index}:</b> {variable}"}
+
+r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
+
+st.pydeck_chart(r, use_container_width=True)
+
+
+
+
+
+
+
+
+vac_dict = {'Booster Coverage': 'booster', 'Fully-Vaccinated Coverage': 'fully', 'Vaccinated-Once Coverage': 'once'}
+variable_vac = vac_dict[sel_vac]
+
+coverage = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
+df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
+df_vac['date'] = pd.to_datetime(df_vac['date'])
+
+df_vac['booster'] = (df_vac['total_boosters']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+df_vac['fully'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+df_vac['variable_vac'] = df_vac[variable_vac]
+df_vac['vac'] = sel_vac
+
+df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
+df_vac = df_vac.dropna()
+
+# Define a layer to display on a map
+polygon_layer = pdk.Layer(
+            "PolygonLayer",
+            df_vac,
+            id="geojson",
+            opacity=0.2,
+            stroked=False,
+            get_polygon="coordinates",
+            filled=True,
+            # get_elevation='elevation',
+            # elevation_scale=1e5,
+            # elevation_range=[0,100],
+            extruded=True,
+            # wireframe=True,
+            get_fill_color=variable_vac,
+            get_line_color=[255, 255, 255],
+            auto_highlight=True,
+            pickable=True)
+        
+# Render
+    
+tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
 
 r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
 
