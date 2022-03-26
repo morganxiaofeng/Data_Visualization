@@ -1,0 +1,192 @@
+{
+    "type": "Feature",
+    "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+            [
+                [
+                    [
+                        43.58274580259273,
+                        41.09214325618256
+                    ],
+                    [
+                        44.97248009621807,
+                        41.24812856705559
+                    ],
+                    [
+                        45.17949588397934,
+                        40.98535390885146
+                    ],
+                    [
+                        45.56035118997044,
+                        40.81228953710592
+                    ],
+                    [
+                        45.35917483905817,
+                        40.56150381119346
+                    ],
+                    [
+                        45.89190717955509,
+                        40.21847565364001
+                    ],
+                    [
+                        45.61001224140292,
+                        39.89999380142518
+                    ],
+                    [
+                        46.03453413268064,
+                        39.62802073827307
+                    ],
+                    [
+                        46.48349897643245,
+                        39.46415477147553
+                    ],
+                    [
+                        46.50571984231797,
+                        38.77060537368629
+                    ],
+                    [
+                        46.14362308124881,
+                        38.74120148371221
+                    ],
+                    [
+                        45.73537926614301,
+                        39.31971914321974
+                    ],
+                    [
+                        45.73997846861698,
+                        39.47399913182712
+                    ],
+                    [
+                        45.29814497252144,
+                        39.47175120702246
+                    ],
+                    [
+                        45.00198733905674,
+                        39.74000356704954
+                    ],
+                    [
+                        44.79398969908194,
+                        39.71300263117706
+                    ],
+                    [
+                        44.4000085792887,
+                        40.00500031184228
+                    ],
+                    [
+                        43.65643639504094,
+                        40.25356395116618
+                    ],
+                    [
+                        43.75265791196841,
+                        40.74020091405876
+                    ],
+                    [
+                        43.58274580259273,
+                        41.09214325618256
+                    ]
+                ]
+            ]
+        ]
+    },
+    "properties": {
+        "scalerank": 1,
+        "featurecla": "Admin-0 country",
+        "labelrank": 6.0,
+        "sovereignt": "Armenia",
+        "sov_a3": "ARM",
+        "adm0_dif": 0.0,
+        "level": 2.0,
+        "type": "Sovereign country",
+        "admin": "Armenia",
+        "adm0_a3": "ARM",
+        "geou_dif": 0.0,
+        "geounit": "Armenia",
+        "gu_a3": "ARM",
+        "su_dif": 0.0,
+        "subunit": "Armenia",
+        "su_a3": "ARM",
+        "brk_diff": 0.0,
+        "name": "Armenia",
+        "name_long": "Armenia",
+        "brk_a3": "ARM",
+        "brk_name": "Armenia",
+        "brk_group": null,
+        "abbrev": "Arm.",
+        "postal": "ARM",
+        "formal_en": "Republic of Armenia",
+        "formal_fr": null,
+        "name_ciawf": "Armenia",
+        "note_adm0": null,
+        "note_brk": null,
+        "name_sort": "Armenia",
+        "name_alt": null,
+        "mapcolor7": 3.0,
+        "mapcolor8": 1.0,
+        "mapcolor9": 2.0,
+        "mapcolor13": 10.0,
+        "pop_est": 3045191.0,
+        "pop_rank": 12.0,
+        "gdp_md_est": 26300.0,
+        "pop_year": 2017.0,
+        "lastcensus": 2001.0,
+        "gdp_year": 2016.0,
+        "economy": "6. Developing region",
+        "income_grp": "4. Lower middle income",
+        "wikipedia": -99.0,
+        "fips_10_": "AM",
+        "iso_a2": "AM",
+        "iso_a3": "ARM",
+        "iso_a3_eh": "ARM",
+        "iso_n3": "051",
+        "un_a3": "051",
+        "wb_a2": "AM",
+        "wb_a3": "ARM",
+        "woe_id": 23424743.0,
+        "woe_id_eh": 23424743.0,
+        "woe_note": "Exact WOE match as country",
+        "adm0_a3_is": "ARM",
+        "adm0_a3_us": "ARM",
+        "adm0_a3_un": -99.0,
+        "adm0_a3_wb": -99.0,
+        "continent": "Asia",
+        "region_un": "Asia",
+        "subregion": "Western Asia",
+        "region_wb": "Europe & Central Asia",
+        "name_len": 7.0,
+        "long_len": 7.0,
+        "abbrev_len": 4.0,
+        "tiny": -99.0,
+        "homepart": 1.0,
+        "min_zoom": 0.0,
+        "min_label": 5.0,
+        "max_label": 10.0
+    },
+    "id": 6,
+    "links": [
+        {
+            "rel": "self",
+            "type": "application/geo+json",
+            "title": "This document as GeoJSON",
+            "href": "https://features.byteroad.net/collections/countries/items/6?f=json"
+        },
+        {
+            "rel": "alternate",
+            "type": "application/ld+json",
+            "title": "This document as RDF (JSON-LD)",
+            "href": "https://features.byteroad.net/collections/countries/items/6?f=jsonld"
+        },
+        {
+            "rel": "alternate",
+            "type": "text/html",
+            "title": "This document as HTML",
+            "href": "https://features.byteroad.net/collections/countries/items/6?f=html"
+        },
+        {
+            "rel": "collection",
+            "type": "application/json",
+            "title": "Countries in the world (SpatialLite Provider)",
+            "href": "https://features.byteroad.net/collections/countries"
+        }
+    ]
+}
