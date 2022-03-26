@@ -74,6 +74,9 @@ def color_scale(val):
             return color_range[i]
     return color_range[i]
 
+def max_scale(val):
+    return (val/val.max()).replace(np.nan,0).apply(color_scale)
+
 src_geo = 'countries.json'
 json_geo = pd.read_json(src_geo)
 geo = pd.DataFrame()
@@ -113,7 +116,7 @@ index = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'str
 df = pd.merge(index, geo, on='adm0_a3', how='left')
 df['date'] = pd.to_datetime(df['date'])
 
-df['fill_color'] = (df[variable]/df[variable].max()).replace(np.nan,0).apply(color_scale)
+df['fill_color'] = max_scale(df[variable])
 df['variable'] = df[variable]
 df['index'] = sel_index
 
@@ -163,9 +166,9 @@ if sel_vac != None:
     df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
     df_vac['date'] = pd.to_datetime(df_vac['date'])
 
-    df_vac['booster'] = ((df_vac['total_boosters']/df_vac['people_vaccinated'])/(df_vac['total_boosters']/df_vac['people_vaccinated'].max())).replace(np.nan,0).apply(color_scale)
-    df_vac['fully'] = ((df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'])/(df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'].max())).replace(np.nan,0).apply(color_scale)
-    df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'])/((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'].max())).replace(np.nan,0).apply(color_scale)
+    df_vac['booster'] = max_scale((df_vac['total_boosters']/df_vac['people_vaccinated']))
+    df_vac['fully'] = max_scale(df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'])
+    df_vac['once'] = max_scale((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'])
     df_vac['variable_vac'] = df_vac[variable_vac]
     df_vac['vac'] = sel_vac
 
