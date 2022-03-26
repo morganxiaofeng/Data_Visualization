@@ -124,7 +124,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 y=alt.Y('Continent'),
                                 color=alt.Color('New Vaccinations Smoothed',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
-                                tooltip=df_vac_case.columns
+                                tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
                                     ).add_selection(hover)
@@ -136,7 +136,7 @@ case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 y=alt.Y('Continent'),
                                 color=alt.Color('New Cases Smoothed',scale=alt.Scale(scheme='blues')),
                                 opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
-                                tooltip=df_vac_case.columns
+                                tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
                                     ).add_selection(hover)
