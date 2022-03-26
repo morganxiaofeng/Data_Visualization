@@ -59,14 +59,14 @@ sel_region, sel_index, sel_date, sel_vac = display_sidebar(data)
 
 ###########################################################
 
-cord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
-             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-59.0625, -14.6048]}
+coord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
+             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-66.0625, -8.6048]}
 
 # Set the viewport location
 if sel_region == 'World':
-    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0.5, bearing=0, pitch=0)
+    view_state = pdk.ViewState(latitude=coord_dict[sel_region][0], longitude=coord_dict[sel_region][1], zoom=0.5, bearing=0, pitch=0)
 else:
-    view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
+    view_state = pdk.ViewState(latitude=coord_dict[sel_region][0], longitude=coord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
 
 def color_scale(val):
     for i, b in enumerate(breaks):
@@ -121,9 +121,10 @@ df['variable'] = df[variable]
 df['index'] = sel_index
 
 df = df.loc[df.date == np.datetime64(sel_date)]
-df = df.dropna()
+df = df.dropna(axis=0)
 
 # Define a layer to display on a map
+
 polygon_layer = pdk.Layer(
             "PolygonLayer",
             df,
@@ -162,9 +163,10 @@ if sel_vac != None:
     vac_dict = {'Booster Coverage': ['booster', 'booster_coverage'], 'Fully-Vaccinated Coverage': ['fully', 'fully_coverage'], 'Vaccinated-Once Coverage': ['once', 'once_coverage']}
     variable_vac = vac_dict[sel_vac][0]
 
-    coverage = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
-    df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
+    coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
+    df_vac = coverage.loc[df.location.isin(coord_dict.keys())]
     df_vac['date'] = pd.to_datetime(df_vac['date'])
+    df_vac['coordinates'] = df_vac['location'].apply(lambda x: coord_dict[x])
 
     df_vac['booster_coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
     df_vac['booster'] = max_scale(df_vac['booster_coverage'])
@@ -176,31 +178,31 @@ if sel_vac != None:
     df_vac['vac'] = sel_vac
 
     df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
-    df_vac = df_vac.dropna()
+    df_vac = df_vac.dropna(axis=0)
 
     # Define a layer to display on a map
-    polygon_layer = pdk.Layer(
-                "PolygonLayer",
-                df_vac,
-                id="geojson",
-                opacity=0.2,
-                stroked=False,
-                get_polygon="coordinates",
-                filled=True,
-                # get_elevation='elevation',
-                # elevation_scale=1e5,
-                # elevation_range=[0,100],
-                extruded=True,
-                # wireframe=True,
-                get_fill_color=variable_vac,
-                get_line_color=[255, 255, 255],
-                auto_highlight=True,
-                pickable=True)
+    
+    scatter_layer = pdk.Layer(
+    "ScatterplotLayer",
+    df_vac,
+    pickable=True,
+    opacity=0.8,
+    stroked=True,
+    filled=True,
+    radius_scale=6,
+    radius_min_pixels=1,
+    radius_max_pixels=100,
+    line_width_min_pixels=1,
+    get_position="coordinates",
+    get_radius=30,
+    get_fill_color=variable_vac,
+    get_line_color=[0, 0, 0],
+)
 
     # Render
 
-    tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
+    tooltipscatter = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
 
-    r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
+    scatter = pdk.Deck(layers=[scatter_layer], initial_view_state=view_state, map_style='light', tooltip=tooltipscatter)
 
-    st.pydeck_chart(r, use_container_width=True)
+    st.pydeck_chart(scatter, use_container_width=True)
