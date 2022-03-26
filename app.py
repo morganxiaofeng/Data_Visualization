@@ -55,7 +55,7 @@ def display_sidebar(data):
 
 
 
-sel_region, sel_index, sel_date = display_sidebar(data)
+sel_region, sel_index, sel_date, sel_vac = display_sidebar(data)
 
 ###########################################################
 
