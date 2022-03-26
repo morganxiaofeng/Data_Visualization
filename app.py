@@ -6,8 +6,8 @@ import math
 from urllib.request import urlopen
 import requests
 import altair as alt
-from vega_datasets import data
-from altair import datum
+# from vega_datasets import data
+# from altair import datum
 import datetime
 
 def color_scale(val):
