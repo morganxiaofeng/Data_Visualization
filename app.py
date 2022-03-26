@@ -1,4 +1,3 @@
-pip install vega_datasets
 import pandas as pd
 from urllib.request import urlopen
 import requests
