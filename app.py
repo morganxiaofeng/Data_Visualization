@@ -60,7 +60,7 @@ sel_region, sel_index, sel_date, sel_vac = display_sidebar(data)
 ###########################################################
 
 coord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
-             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-66.0625, -8.6048]}
+             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-8.6048, -66.0625]}
 
 # Set the viewport location
 if sel_region == 'World':
