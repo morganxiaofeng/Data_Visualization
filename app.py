@@ -13,7 +13,7 @@ import datetime
 data = pd.read_csv('owid-covid-data_final.csv')
 
 def display_sidebar(data):
-    sel_region,sel_index,sel_date,sel_vac = None, None, None
+    sel_region,sel_index,sel_date,sel_vac = None, None, None, None
 
     st.sidebar.header('Choose options below')
     # 0) Need to reset data
