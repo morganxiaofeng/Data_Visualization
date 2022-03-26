@@ -159,20 +159,20 @@ st.pydeck_chart(r, use_container_width=True)
 
 if sel_vac != None:
     
-    vac_dict = {'Booster Coverage': 'booster', 'Fully-Vaccinated Coverage': 'fully', 'Vaccinated-Once Coverage': 'once'}
-    variable_vac = vac_dict[sel_vac]
+    vac_dict = {'Booster Coverage': ['booster', 'booster_coverage'], 'Fully-Vaccinated Coverage': ['fully', 'fully_coverage'], 'Vaccinated-Once Coverage': ['once', 'once_coverage']}
+    variable_vac = vac_dict[sel_vac][0]
 
     coverage = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
     df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
     df_vac['date'] = pd.to_datetime(df_vac['date'])
 
-    df_vac['booster'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['booster'] = max_scale(df_vac['booster'])
-    df_vac['fully'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['fully'] = max_scale(df_vac['fully'])
-    df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
-    df_vac['once'] = max_scale(df_vac['once'])
-    df_vac['variable_vac'] = df_vac[variable_vac]
+    df_vac['booster_coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['booster'] = max_scale(df_vac['booster_coverage'])
+    df_vac['fully_coverage'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['fully'] = max_scale(df_vac['fully_coverage'])
+    df_vac['once_coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
+    df_vac['once'] = max_scale(df_vac['once_coverage'])
+    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
     df_vac['vac'] = sel_vac
 
     df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
