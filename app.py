@@ -196,8 +196,6 @@ text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
     detail='Stage of Vaccination:N',
     text=alt.Text('Coverage%', format='.1f'))
 
-bars + text
-
 st.altair_chart(bars + text, use_container_width=True)
 
 
