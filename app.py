@@ -50,7 +50,7 @@ sel_region, sel_index, sel_date = display_sidebar(data)
 ###########################################################
 
 cord_dict = {'World':[0,0], 'Africa':[8.7832,34.5085], 'Asia':[34.0479, 100.6197], 'Europe':[15.2551,54.5260], 
-             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-55.4915, -8.7832]}
+             'North America':[54.5260, -105.2551], 'Oceania':[-22.7359, 140.0188], 'South America':[-55.4915, 8.7832]}
 
 def color_scale(val):
     for i, b in enumerate(breaks):
