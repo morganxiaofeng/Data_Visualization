@@ -164,7 +164,7 @@ if sel_vac != None:
     variable_vac = vac_dict[sel_vac][0]
 
     coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
-    df_vac = coverage.loc[df.location.isin(coord_dict.keys())]
+    df_vac = coverage.loc[coverage.location.isin(coord_dict.keys())]
     df_vac['date'] = pd.to_datetime(df_vac['date'])
     df_vac['coordinates'] = df_vac['location'].apply(lambda x: coord_dict[x])
 
