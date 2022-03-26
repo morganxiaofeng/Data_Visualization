@@ -180,19 +180,23 @@ df_vac = df_vac.dropna(axis=0)
 df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['booster_coverage','fully_coverage','once_coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
 df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
 
-if sel_region
-bars = alt.Chart(source).mark_bar().encode(
-    x=alt.X('sum(yield):Q', stack='zero'),
-    y=alt.Y('variety:N'),
-    color=alt.Color('site')
-)
+hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 
-text = alt.Chart(source).mark_text(dx=-15, dy=3, color='white').encode(
-    x=alt.X('sum(yield):Q', stack='zero'),
-    y=alt.Y('variety:N'),
-    detail='site:N',
-    text=alt.Text('sum(yield):Q', format='.1f')
-)
+bars = alt.Chart(df_vac_melt).mark_bar().encode(
+    x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
+    y=alt.Y('Continent'),
+    color=alt.Color('Stage of Vaccination'),
+    opacity=alt.condition(hover, alt.value(1.0), alt.value(0.3))
+    ).add_selection(hover)
+
+
+text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
+    x=alt.X('Coverage%', stack='zero'),
+    y=alt.Y('Continent'),
+    detail='Stage of Vaccination:N',
+    text=alt.Text('Coverage%', format='.1f'))
+
+bars + text
 
 st.altair_chart(bars + text, use_container_width=True)
 
