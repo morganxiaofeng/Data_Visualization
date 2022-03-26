@@ -193,9 +193,8 @@ if sel_vac != None:
     line_width_min_pixels=1,
     get_position="coordinates",
     get_radius=50000,
-    get_fill_color=variable_vac,
-    get_line_color=[0, 0, 0],
-)
+    get_fill_color='variable_vac',
+    get_line_color=[0, 0, 0])
 
     # Render
 
