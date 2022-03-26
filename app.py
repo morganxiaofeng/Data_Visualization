@@ -121,7 +121,6 @@ df['variable'] = df[variable]
 df['index'] = sel_index
 
 df = df.loc[df.date == np.datetime64(sel_date)]
-df = df.dropna(axis=0)
 
 # Define a layer to display on a map
 
@@ -178,7 +177,6 @@ if sel_vac != None:
     df_vac['vac'] = sel_vac
 
     df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
-    df_vac = df_vac.dropna(axis=0)
 
     # Define a layer to display on a map
     
@@ -201,7 +199,7 @@ if sel_vac != None:
 
     # Render
 
-    tooltipscatter = {"html": "<b>Country/Region:</b> {location} <br /><b>{vac}:</b> {variable_vac}"}
+    tooltipscatter = {"html": "<b>Continent:</b> {location} <br /><b>{vac}:</b> {variable_vac}"}
 
     scatter = pdk.Deck(layers=[scatter_layer], initial_view_state=view_state, map_style='light', tooltip=tooltipscatter)
 
