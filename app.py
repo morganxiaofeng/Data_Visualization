@@ -117,6 +117,8 @@ df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
 df_vac_case = df_vac_case.fillna(0)
 dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist()
 
+hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
+
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('Date:O', sort=dates, title='date'),
                                 y=alt.Y('Continent'),
@@ -211,8 +213,6 @@ df_vac = df_vac.dropna(axis=0)
 
 df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['booster_coverage','fully_coverage','once_coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
 df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
-
-hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 
 bars = alt.Chart(df_vac_melt).mark_bar().encode(
     x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
