@@ -117,7 +117,7 @@ polygon_layer = pdk.Layer(
         
 
 # Set the viewport location
-if sel_region = 'World':
+if sel_region == 'World':
     view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=0, bearing=0, pitch=0)
 else:
     view_state = pdk.ViewState(latitude=cord_dict[sel_region][0], longitude=cord_dict[sel_region][1], zoom=1.5, bearing=0, pitch=0)
