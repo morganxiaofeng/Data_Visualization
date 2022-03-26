@@ -13,7 +13,7 @@ import datetime
 data = pd.read_csv('owid-covid-data_final.csv')
 
 def display_sidebar(data):
-    sel_region,sel_index,sel_date = None, None, None
+    sel_region,sel_index,sel_date,sel_vac = None, None, None
 
     st.sidebar.header('Choose options below')
     # 0) Need to reset data
@@ -154,46 +154,47 @@ st.pydeck_chart(r, use_container_width=True)
 
 
 
-
-vac_dict = {'Booster Coverage': 'booster', 'Fully-Vaccinated Coverage': 'fully', 'Vaccinated-Once Coverage': 'once'}
-variable_vac = vac_dict[sel_vac]
-
-coverage = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
-df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
-df_vac['date'] = pd.to_datetime(df_vac['date'])
-
-df_vac['booster'] = (df_vac['total_boosters']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
-df_vac['fully'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
-df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
-df_vac['variable_vac'] = df_vac[variable_vac]
-df_vac['vac'] = sel_vac
-
-df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
-df_vac = df_vac.dropna()
-
-# Define a layer to display on a map
-polygon_layer = pdk.Layer(
-            "PolygonLayer",
-            df_vac,
-            id="geojson",
-            opacity=0.2,
-            stroked=False,
-            get_polygon="coordinates",
-            filled=True,
-            # get_elevation='elevation',
-            # elevation_scale=1e5,
-            # elevation_range=[0,100],
-            extruded=True,
-            # wireframe=True,
-            get_fill_color=variable_vac,
-            get_line_color=[255, 255, 255],
-            auto_highlight=True,
-            pickable=True)
-        
-# Render
+if sel_vac != None:
     
-tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
+    vac_dict = {'Booster Coverage': 'booster', 'Fully-Vaccinated Coverage': 'fully', 'Vaccinated-Once Coverage': 'once'}
+    variable_vac = vac_dict[sel_vac]
 
-r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
+    coverage = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
+    df_vac = pd.merge(coverage, geo, on='adm0_a3', how='left')
+    df_vac['date'] = pd.to_datetime(df_vac['date'])
 
-st.pydeck_chart(r, use_container_width=True)
+    df_vac['booster'] = (df_vac['total_boosters']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+    df_vac['fully'] = (df_vac['people_fully_vaccinated']/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+    df_vac['once'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated'].max()).replace(np.nan,0).apply(color_scale)
+    df_vac['variable_vac'] = df_vac[variable_vac]
+    df_vac['vac'] = sel_vac
+
+    df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
+    df_vac = df_vac.dropna()
+
+    # Define a layer to display on a map
+    polygon_layer = pdk.Layer(
+                "PolygonLayer",
+                df_vac,
+                id="geojson",
+                opacity=0.2,
+                stroked=False,
+                get_polygon="coordinates",
+                filled=True,
+                # get_elevation='elevation',
+                # elevation_scale=1e5,
+                # elevation_range=[0,100],
+                extruded=True,
+                # wireframe=True,
+                get_fill_color=variable_vac,
+                get_line_color=[255, 255, 255],
+                auto_highlight=True,
+                pickable=True)
+
+    # Render
+
+    tooltip = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
+
+    r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
+
+    st.pydeck_chart(r, use_container_width=True)
