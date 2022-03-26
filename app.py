@@ -45,6 +45,7 @@ def display_sidebar(data):
 sel_region, sel_index, sel_date = display_sidebar(data)
 
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
+variable = index_dict[sel_index]
 def color_scale(val):
     for i, b in enumerate(breaks):
         if val <= b:
@@ -84,7 +85,7 @@ color_range = [
     # [84,39,143],
     ]
 
-df['fill_color'] = (df[index_dict[sel_index]]/df[index_dict[sel_index]].max()).replace(np.nan,0).apply(color_scale)
+df['fill_color'] = (df[variable]/df[variable].max()).replace(np.nan,0).apply(color_scale)
 
 if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
     st.success(f'Date: {sel_date}')
@@ -117,7 +118,7 @@ polygon_layer = pdk.Layer(
 view_state = pdk.ViewState(latitude=0, longitude=0, zoom=1, bearing=0, pitch=0)
 
 # Render
-tooltip = {"html": "<b>Country/Region:</b> {admin} <br /> {sel_index}: {index_dict[sel_index]}"}
+tooltip = {"html": "<b>Country/Region:</b> {admin} <br/> </b> {sel_index}<br/> : </b>{variable}<br />"}
 r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='light', tooltip=tooltip)
 
 st.pydeck_chart(r, use_container_width=True)
