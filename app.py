@@ -55,8 +55,12 @@ df['fill_color'] = (df['stringency_index']/df['stringency_index'].max()).replace
 # Choose a startdate to display
 st.sidebar.header('Choose a startdate below')
 st.sidebar.markdown('Choose a startdate (e.g., 2020-08-15)')
-startdate = st.sidebar.slider('Startdate', min_value=df['date'].unique()[0], max_value=df['date'].unique()[-1])
-df = df.loc[df.date == startdate]
+sel_date = st.sidebar.date_input('Date:', datetime.date(2021,1,1))
+if sel_date <= df['date'].unique()[-1] and sel_date >= df['date'].unique()[0]:
+    st.success('Date: `%s`\n\n % (sel_date))
+else:
+    st.error('Error: The date should be in Year 2021.')
+df = df.loc[df.date == sel_date]
 df = df.dropna()
 
 # Define a layer to display on a map
