@@ -163,7 +163,7 @@ variable_vac = vac_dict[sel_vac][0]
 coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
 df_vac = coverage.loc[coverage.location.isin(coord_dict.keys())]
 df_vac['date'] = pd.to_datetime(df_vac['date'])
-df_vac['coordinates'] = df_vac['location'].apply(lambda x: coord_dict[x])
+df_vac['coordinates'] = df_vac['location'].apply(lambda x: [coord_dict[x][1],coord_dict[x][0]])
 
 df_vac['booster_coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
 df_vac['booster'] = max_scale(df_vac['booster_coverage'])
