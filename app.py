@@ -194,14 +194,14 @@ if sel_vac != None:
     radius_max_pixels=100,
     line_width_min_pixels=1,
     get_position="coordinates",
-    get_radius=30,
+    get_radius=150,
     get_fill_color=variable_vac,
     get_line_color=[0, 0, 0],
 )
 
     # Render
 
-    tooltipscatter = {"html": "<b>Country/Region:</b> {admin} <br /><b>{vac}:</b> {variable_vac}"}
+    tooltipscatter = {"html": "<b>Country/Region:</b> {location} <br /><b>{vac}:</b> {variable_vac}"}
 
     scatter = pdk.Deck(layers=[scatter_layer], initial_view_state=view_state, map_style='light', tooltip=tooltipscatter)
 
