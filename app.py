@@ -6,6 +6,7 @@ import requests
 import altair as alt
 from vega_datasets import data
 from altair import datum
+import datetime
 
 def color_scale(val):
     for i, b in enumerate(breaks):
