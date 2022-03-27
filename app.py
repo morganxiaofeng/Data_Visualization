@@ -135,8 +135,10 @@ st.subheader('Evolution of New Confirmed Cases in 2021, by continent')
 area = alt.Chart(df_vac_case).mark_area().encode(
     x="Date:T",
     y=alt.Y("new_cases_smoothed:Q", title='New Confirmed Cases'),
-    color="location:N"
-)
+    color="Continent:N",
+    opacity=opacity
+    tooltip=['Continent','Date',alt.Tooltip('new_cases_smoothed',title='New Confirmed Cases')]
+).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
 
 st.altair_chart(area, use_container_width=True)
 
@@ -152,9 +154,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 color=colorvac,
                                 opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
-                                ).configure_scale(
-                                    bandPaddingInner=.1
-                                    ).add_selection(hover).interactive()
+                                ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
 
 st.altair_chart(vac_heatmap, use_container_width=True)
 
@@ -165,9 +165,7 @@ case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 color=colorcas,
                                 opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
-                                ).configure_scale(
-                                    bandPaddingInner=.1
-                                    ).add_selection(hover).interactive()
+                                ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
 
 st.altair_chart(case_heatmap, use_container_width=True)
 
