@@ -240,7 +240,7 @@ if sel_vac != None:
     
     scatter_layer = pdk.Layer(
     "ScatterplotLayer",
-    df_vac.loc[df_vac.location.isin(coord_dict.keys()[-6:])],
+    df_vac.loc[df_vac.location != 'World'],
     pickable=True,
     opacity=0.8,
     stroked=True,
