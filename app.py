@@ -285,7 +285,7 @@ regression = alt.Chart(df).mark_circle(size=60).encode(
     alt.X('variable', title=sel_index),
     y='Vaccinations per Capita').transform_regression('variable','Vaccinations per Capita').mark_line()  
    
-                                
-st.altair_chart((scatterplot + regression).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
+                         
+st.altair_chart((scatterplot + regression).interactive(), use_container_width=True)
    
    
