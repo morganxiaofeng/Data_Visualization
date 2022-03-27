@@ -120,18 +120,29 @@ else:
     opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
 ###########################################################
 
-# Heatmap
-st.header('Regional Analysis')
-st.subheader('Monthly Revolution of New Vaccinations Smoothed (2021)')
-vac_case = pd.read_csv('COVID_continent_income.csv').loc[:,['location', 'date', 'new_vaccinations_smoothed', 'new_cases_smoothed']].rename(columns={'iso_code':'adm0_a3'})
+
+vac_case = pd.read_csv('COVID_continent_income.csv').loc[:,['location', 'date', 'new_vaccinations_smoothed', 'new_cases_smoothed', 'total_vaccinations', 'total_cases']].rename(columns={'iso_code':'adm0_a3'})
 df_vac_case = vac_case.loc[vac_case.location.isin(list(coord_dict.keys())[1:])].rename(columns={'location': 'Continent', 'date': 'Date', 'new_vaccinations_smoothed': 'New Vaccinations Smoothed', 'new_cases_smoothed': 'New Cases Smoothed'})
 df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
 df_vac_case = df_vac_case.fillna(0)
 dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist()
-presets = [0,.25,.5,.75,1]
-quantiles = np.quantile(np.arange(0,len(dates)),presets).tolist()
-quantiles = [int(np.floor(q)) for q in quantiles]
-date_visible = [dates[idx] for idx in quantiles]
+
+
+# Stacked Area Chart
+st.header('Global View of Cases & Vaccinations')
+st.subheader('Evolution of New Confirmed Cases in 2021, by continent')
+
+area = alt.Chart(df_vac_case).mark_area().encode(
+    x="Date:T",
+    y=alt.Y("new_cases_smoothed:Q", title='New Confirmed Cases'),
+    color="location:N"
+)
+
+st.altair_chart(area, use_container_width=True)
+
+# Heatmap
+st.header('Regional Analysis')
+st.subheader('Monthly Revolution of New Vaccinations Smoothed (2021)')
 
 
 
