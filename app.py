@@ -162,7 +162,7 @@ line_cas = alt.Chart(df_vac_case).mark_line().encode(
     tooltip=['Continent','Date', alt.Tooltip("total_cases", title='Total Cases')]
     ).add_selection(hover).interactive()
 
-st.altair_chart(alt.hconcat(line_vac,line_cas).configure_scale(bandPaddingInner=.1), use_container_width=True)
+st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=.1), use_container_width=True)
 
 # Heatmap
 st.header('Regional Analysis')
