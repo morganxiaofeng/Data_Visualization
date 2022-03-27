@@ -234,18 +234,13 @@ text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
 st.altair_chart(bars + text, use_container_width=True)
 
 
-
-
-
-
-
 if sel_vac != None:
     
     # Define a layer to display on a map
     
     scatter_layer = pdk.Layer(
     "ScatterplotLayer",
-    df_vac,
+    df_vac.loc[df_vac.location.isin(coord_dict.keys()[-6:])],
     pickable=True,
     opacity=0.8,
     stroked=True,
