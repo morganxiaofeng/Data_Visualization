@@ -133,7 +133,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
-                                    ).add_selection(hover)
+                                    ).add_selection(hover).interactive()
 
 st.altair_chart(vac_heatmap, use_container_width=True)
 
@@ -146,14 +146,14 @@ case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
-                                    ).add_selection(hover)
+                                    ).add_selection(hover).interactive()
 
 st.altair_chart(case_heatmap, use_container_width=True)
 
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
 variable = index_dict[sel_index]
 
-index = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'stringency_index', 'gdp_per_capita', 'human_development_index']].rename(columns={'iso_code':'adm0_a3'})
+index = pd.read_csv('owid-covid-data_final.csv').loc[:,['iso_code', 'date', 'location', 'continent', 'stringency_index', 'gdp_per_capita', 'human_development_index', 'total_vaccinations', 'population']].rename(columns={'iso_code':'adm0_a3', 'continent': 'Continent'})
 df = pd.merge(index, geo, on='adm0_a3', how='left')
 df['date'] = pd.to_datetime(df['date'])
 
@@ -166,7 +166,7 @@ df = df.dropna(axis=0)
 # Define a layer to display on a map
 
 st.header('How is the situation of macroenvironmental indexes and how is related to vaccination coverage percentages?')
-st.subheader('Policy Index Heatmap')
+st.subheader('Macroenvironmental Index Heatmap')
 
 polygon_layer = pdk.Layer(
             "PolygonLayer",
@@ -234,7 +234,7 @@ text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
     detail='Stage of Vaccination:N',
     text=alt.Text('Coverage%', format='.1f'))
 
-st.altair_chart(bars + text, use_container_width=True)
+st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
 
 
 if sel_vac != None:
@@ -268,3 +268,24 @@ if sel_vac != None:
     scatter = pdk.Deck(layers=[scatter_layer], initial_view_state=view_state, map_style='light', tooltip=tooltipscatter)
 
     st.pydeck_chart(scatter, use_container_width=True)
+    
+# Scatter Plot - Correlations
+
+df['Vaccinations per Capita'] = round(df['total_vaccinations']/df['population'],3).replace(np.nan,0)
+   
+scatterplot = alt.Chart(df).mark_circle(size=60).encode(
+    alt.X('variable', title=sel_index),
+    y='Vaccinations per Capita',
+    color='continent',
+    opacity=alt.condition(hover, alt.value(1.0), alt.value(0.3)),
+    tooltip=['location', variable, 'Vaccinations per Capita']
+).add_selection(hover)
+
+regression = alt.Chart(df).mark_circle(size=60).encode(
+    alt.X('variable', title=sel_index),
+    y='Vaccinations per Capita').transform_regression('variable','Vaccinations per Capita').mark_line()  
+   
+                                
+st.altair_chart((scatterplot + regression).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
+   
+   
