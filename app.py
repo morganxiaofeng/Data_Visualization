@@ -130,7 +130,7 @@ dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist
 
 # Stacked Area Chart
 st.header('Global View of Cases & Vaccinations')
-st.subheader('Evolution of New Confirmed Cases in 2021, by continent')
+st.subheader('Evolution of New Confirmed Cases in 2021 per Continent')
 
 area = alt.Chart(df_vac_case).mark_area().encode(
     x=alt.X('Date', sort=dates),
@@ -142,11 +142,31 @@ area = alt.Chart(df_vac_case).mark_area().encode(
 
 st.altair_chart(area, use_container_width=True)
 
+# Line Chart
+
+st.subheader('Evolution of Total Vaccinations and Total Cases in 2021 per Continent')
+
+line_vac = alt.Chart(df_vac_case).mark_line().encode(
+    x="Date: T",
+    y=alt.Y("total_vaccinations", title='Total Vaccinations'),
+    color="Continent:N",
+    opacity=opacity,
+    tooltip=['Continent','Date', alt.Tooltip("total_vaccinations", title='Total Vaccinations')]
+    ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+
+line_cas = alt.Chart(df_vac_case).mark_line().encode(
+    x="Date: T",
+    y=alt.Y("total_cases", title='Total Vaccinations'),
+    color="Continent:N",
+    opacity=opacity,
+    tooltip=['Continent','Date', alt.Tooltip("total_cases", title='Total Cases')]
+    ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+
+st.altair_chart(alt.vconcat(line_vac,line_cas), use_container_width=True)
+
 # Heatmap
 st.header('Regional Analysis')
-st.subheader('Monthly Revolution of New Vaccinations Smoothed (2021)')
-
-
+st.subheader('Monthly Revolution of New Vaccinations Smoothed in 2021')
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
