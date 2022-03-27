@@ -112,7 +112,7 @@ color_range = [
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 if sel_region == 'World':
     color = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'))
-    opacity = 0
+    opacity = alt.value(0)
 else:
     color = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
     opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
