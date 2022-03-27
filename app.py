@@ -111,12 +111,12 @@ color_range = [
 # Hover setting
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 if sel_region == 'World':
-    colorvac = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'))
-    colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'))
+    colorvac = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'), title='Monthly Mean of New Vaccinations')
+    colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'), title='Monthly Mean of New Cases')
     opacity = alt.value(1)
 else:
-    colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
-    colorcas = alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
+    colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='Monthly Mean of New Vaccinations')
+    colorcas = alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='Monthly Mean of New Cases')
     opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
 ###########################################################
 
