@@ -147,22 +147,22 @@ st.altair_chart(area, use_container_width=True)
 st.subheader('Evolution of Total Vaccinations and Total Cases in 2021 per Continent')
 
 line_vac = alt.Chart(df_vac_case).mark_line().encode(
-    x="Date: T",
+    x="Date:T",
     y=alt.Y("total_vaccinations", title='Total Vaccinations'),
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_vaccinations", title='Total Vaccinations')]
-    )
+    ).add_selection(hover).interactive()
 
 line_cas = alt.Chart(df_vac_case).mark_line().encode(
-    x="Date: T",
-    y=alt.Y("total_cases", title='Total Vaccinations'),
+    x="Date:T",
+    y=alt.Y("total_cases", title='Total Cases'),
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_cases", title='Total Cases')]
-    )
+    ).add_selection(hover).interactive()
 
-st.altair_chart(alt.vconcat(line_vac,line_cas), use_container_width=True)
+st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=.1), use_container_width=True)
 
 # Heatmap
 st.header('Regional Analysis')
