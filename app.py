@@ -133,11 +133,11 @@ st.header('Global View of Cases & Vaccinations')
 st.subheader('Evolution of New Confirmed Cases in 2021, by continent')
 
 area = alt.Chart(df_vac_case).mark_area().encode(
-    x="Date:T",
-    y=alt.Y("new_cases_smoothed:Q", title='New Confirmed Cases'),
+    x=alt.X('Date', sort=dates),
+    y=alt.Y("New Cases Smoothed", title='New Confirmed Cases'),
     color="Continent:N",
     opacity=opacity,
-    tooltip=['Continent','Date',alt.Tooltip('new_cases_smoothed',title='New Confirmed Cases')]
+    tooltip=['Continent','Date', alt.Tooltip('New Cases Smoothed',title='New Confirmed Cases')]
 ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
 
 st.altair_chart(area, use_container_width=True)
