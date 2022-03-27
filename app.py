@@ -152,7 +152,7 @@ line_vac = alt.Chart(df_vac_case).mark_line().encode(
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_vaccinations", title='Total Vaccinations')]
-    ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+    )
 
 line_cas = alt.Chart(df_vac_case).mark_line().encode(
     x="Date: T",
@@ -160,7 +160,7 @@ line_cas = alt.Chart(df_vac_case).mark_line().encode(
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_cases", title='Total Cases')]
-    ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+    )
 
 st.altair_chart(alt.vconcat(line_vac,line_cas), use_container_width=True)
 
