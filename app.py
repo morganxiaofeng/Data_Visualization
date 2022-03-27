@@ -136,7 +136,7 @@ area = alt.Chart(df_vac_case).mark_area().encode(
     x="Date:T",
     y=alt.Y("new_cases_smoothed:Q", title='New Confirmed Cases'),
     color="Continent:N",
-    opacity=opacity
+    opacity=opacity,
     tooltip=['Continent','Date',alt.Tooltip('new_cases_smoothed',title='New Confirmed Cases')]
 ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
 
