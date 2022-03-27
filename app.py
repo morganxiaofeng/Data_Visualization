@@ -111,6 +111,8 @@ color_range = [
 ###########################################################
 
 # Heatmap
+st.header('Regional Analysis')
+st.subheader('Monthly Revolution of New Vaccinations Smoothed (2021)')
 vac_case = pd.read_csv('COVID_continent_income.csv').loc[:,['location', 'date', 'new_vaccinations_smoothed', 'new_cases_smoothed']].rename(columns={'iso_code':'adm0_a3'})
 df_vac_case = vac_case.loc[vac_case.location.isin(coord_dict.keys())].rename(columns={'location': 'Continent', 'date': 'Date', 'new_vaccinations_smoothed': 'New Vaccinations Smoothed', 'new_cases_smoothed': 'New Cases Smoothed'})
 df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
@@ -135,6 +137,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
 
 st.altair_chart(vac_heatmap, use_container_width=True)
 
+st.subheader('Monthly Revolution of New Cases Smoothed (2021)')
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
@@ -161,6 +164,9 @@ df['index'] = sel_index
 df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna(axis=0)
 # Define a layer to display on a map
+
+st.header('How is the situation of macro-environment policies regarding COVID and how is related to vaccination coverage percentages?')
+st.subheader('Policy Index Heatmap')
 
 polygon_layer = pdk.Layer(
             "PolygonLayer",
@@ -190,8 +196,6 @@ r = pdk.Deck(layers=[polygon_layer], initial_view_state=view_state, map_style='l
 st.pydeck_chart(r, use_container_width=True)
 
 
-
-
 # Horizontal stacked bar chart
     
 vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Fully-Vaccinated Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated-Once Coverage']}
@@ -216,6 +220,8 @@ df_vac = df_vac.dropna(axis=0)
 
 df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['Booster Coverage','Vaccinated Twice (Fully) Coverage','Vaccinated Once Coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
 df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
+
+st.subheader(f'Vaccination Coverage Pertancages per Dose on {sel_date} in Different Continents')
 
 bars = alt.Chart(df_vac_melt).mark_bar().encode(
     x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
