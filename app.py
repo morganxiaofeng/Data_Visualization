@@ -27,10 +27,10 @@ def display_sidebar(data):
     
     sel_region = st.sidebar.selectbox('Continent',['World', 'Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'])
 
-    # 2) Choose a Political Index
-    st.sidebar.markdown('Choose a Political Index (e.g., Stringency Index)')
+    # 2) Choose a Macroenvironmental Index
+    st.sidebar.markdown('Choose a Macroenvironmental Index (e.g., Stringency Index)')
     
-    sel_index = st.sidebar.selectbox('Political Index', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
+    sel_index = st.sidebar.selectbox('Macroenvironmental Index', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
         
     # 3) Choose a date to display
     st.sidebar.header('Choose a date below')
@@ -41,7 +41,7 @@ def display_sidebar(data):
     else:
         st.error('Error: The date should be in Year 2021.')
     
-    # 4) Compare with Political Index?
+    # 4) Compare with Macroenvironmental Index?
     if sel_index:
         st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Fully-Vaccinated Coverage and Vaccinated-Once Coverage)?')
         check = st.sidebar.checkbox('Yes')
@@ -165,7 +165,7 @@ df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna(axis=0)
 # Define a layer to display on a map
 
-st.header('How is the situation of macro-environment indexand how is related to vaccination coverage percentages?')
+st.header('How is the situation of macroenvironmental indexes and how is related to vaccination coverage percentages?')
 st.subheader('Policy Index Heatmap')
 
 polygon_layer = pdk.Layer(
