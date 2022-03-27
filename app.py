@@ -111,10 +111,12 @@ color_range = [
 # Hover setting
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 if sel_region == 'World':
-    color = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'))
-    opacity = alt.value(0)
+    colorvac = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'))
+    colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'))
+    opacity = alt.value(1)
 else:
-    color = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
+    colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
+    colorcas = alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
     opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
 ###########################################################
 
@@ -136,8 +138,8 @@ date_visible = [dates[idx] for idx in quantiles]
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
-                                color=color,
-                                opacity=opacity,
+                                color=colorvac,
+                                opacity=colorcas,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
