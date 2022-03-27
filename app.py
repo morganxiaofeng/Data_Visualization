@@ -108,6 +108,14 @@ color_range = [
     # [84,39,143],
     ]
 
+# Hover setting
+hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
+if sel_region == 'World':
+    color = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'))
+    opacity = 0
+else:
+    color = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'))
+    opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
 ###########################################################
 
 # Heatmap
@@ -123,13 +131,13 @@ quantiles = np.quantile(np.arange(0,len(dates)),presets).tolist()
 quantiles = [int(np.floor(q)) for q in quantiles]
 date_visible = [dates[idx] for idx in quantiles]
 
-hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
+
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
-                                color=alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray')),
-                                opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
+                                color=color,
+                                opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
@@ -141,8 +149,8 @@ st.subheader('Monthly Revolution of New Cases Smoothed (2021)')
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
-                                color=alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray')),
-                                opacity=alt.condition(hover, alt.value(1.0), alt.value(0.05)),
+                                color=color,
+                                opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).configure_scale(
                                     bandPaddingInner=.1
@@ -150,6 +158,8 @@ case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
 
 st.altair_chart(case_heatmap, use_container_width=True)
 
+
+# Macroenvironmental geo map
 index_dict = {'Stringency Index': 'stringency_index', 'GDP per Capita': 'gdp_per_capita', 'Human Development Index': 'human_development_index'}
 variable = index_dict[sel_index]
 
@@ -224,7 +234,7 @@ bars = alt.Chart(df_vac_melt).mark_bar().encode(
     x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
     y=alt.Y('Continent'),
     color=alt.Color('Stage of Vaccination'),
-    opacity=alt.condition(hover, alt.value(1.0), alt.value(0.3))
+    opacity=opacity
     ).add_selection(hover)
 
 
@@ -277,7 +287,7 @@ scatterplot = alt.Chart(df).mark_circle(size=60).encode(
     alt.X('variable', title=sel_index),
     y='Vaccinations per Capita',
     color='Continent',
-    opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
+    opacity=opacity,
     tooltip=[alt.Tooltip('location', title="Country"), alt.Tooltip('variable', title=sel_index), 'Vaccinations per Capita']
 ).add_selection(hover)
 
