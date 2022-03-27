@@ -278,7 +278,7 @@ scatterplot = alt.Chart(df).mark_circle(size=60).encode(
     y='Vaccinations per Capita',
     color='Continent',
     opacity=alt.condition(hover, alt.value(1.0), alt.value(0.1)),
-    tooltip=['location' as 'Country', variable as sel_index, 'Vaccinations per Capita']
+    tooltip=[alt.Tooltip('location', title="Country", alt.Tooltip('variable', title=sel_index, 'Vaccinations per Capita']
 ).add_selection(hover)
 
 regression = alt.Chart(df).mark_circle(size=60).encode(
