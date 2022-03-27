@@ -197,9 +197,7 @@ st.pydeck_chart(r, use_container_width=True)
 
 
 # Horizontal stacked bar chart
-    
-vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Fully-Vaccinated Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated-Once Coverage']}
-variable_vac = vac_dict[sel_vac][0]
+ 
 
 coverage = pd.read_csv('COVID_continent_income.csv').loc[:,['iso_code', 'location', 'date', 'people_vaccinated', 'people_fully_vaccinated', 'total_boosters', 'population']].rename(columns={'iso_code':'adm0_a3'})
 df_vac = coverage.loc[coverage.location.isin(coord_dict.keys())]
@@ -212,8 +210,7 @@ df_vac['Vaccinated Twice (Fully) Coverage'] = ((df_vac['people_fully_vaccinated'
 df_vac['fully'] = max_scale(df_vac['Vaccinated Twice (Fully) Coverage'])
 df_vac['Vaccinated Once Coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
 df_vac['once'] = max_scale(df_vac['Vaccinated Once Coverage'])
-df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
-df_vac['vac'] = sel_vac
+
 
 df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
 df_vac = df_vac.dropna(axis=0)
@@ -241,6 +238,10 @@ st.altair_chart(bars + text, use_container_width=True)
 
 
 if sel_vac != None:
+    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Fully-Vaccinated Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated-Once Coverage']}
+    variable_vac = vac_dict[sel_vac][0]
+    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
+    df_vac['vac'] = sel_vac
     
     # Define a layer to display on a map
     
