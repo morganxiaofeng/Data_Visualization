@@ -114,7 +114,7 @@ color_range = [
 st.header('Regional Analysis')
 st.subheader('Monthly Revolution of New Vaccinations Smoothed (2021)')
 vac_case = pd.read_csv('COVID_continent_income.csv').loc[:,['location', 'date', 'new_vaccinations_smoothed', 'new_cases_smoothed']].rename(columns={'iso_code':'adm0_a3'})
-df_vac_case = vac_case.loc[vac_case.location.isin(coord_dict.keys())].rename(columns={'location': 'Continent', 'date': 'Date', 'new_vaccinations_smoothed': 'New Vaccinations Smoothed', 'new_cases_smoothed': 'New Cases Smoothed'})
+df_vac_case = vac_case.loc[vac_case.location.isin(list(coord_dict.keys())[1:])].rename(columns={'location': 'Continent', 'date': 'Date', 'new_vaccinations_smoothed': 'New Vaccinations Smoothed', 'new_cases_smoothed': 'New Cases Smoothed'})
 df_vac_case['Date'] = pd.to_datetime(df_vac_case['Date'])
 df_vac_case = df_vac_case.fillna(0)
 dates = df_vac_case['Date'].map(lambda x:x.strftime('%m/%d/%y')).unique().tolist()
