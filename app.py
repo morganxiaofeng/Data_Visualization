@@ -165,7 +165,7 @@ df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna(axis=0)
 # Define a layer to display on a map
 
-st.header('How is the situation of macro-environment policies regarding COVID and how is related to vaccination coverage percentages?')
+st.header('How is the situation of macro-environment indexand how is related to vaccination coverage percentages?')
 st.subheader('Policy Index Heatmap')
 
 polygon_layer = pdk.Layer(
