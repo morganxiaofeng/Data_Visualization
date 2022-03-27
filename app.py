@@ -276,7 +276,7 @@ df['Vaccinations per Capita'] = round(df['total_vaccinations']/df['population'],
 scatterplot = alt.Chart(df).mark_circle(size=60).encode(
     alt.X('variable', title=sel_index),
     y='Vaccinations per Capita',
-    color='continent',
+    color='Continent',
     opacity=alt.condition(hover, alt.value(1.0), alt.value(0.3)),
     tooltip=['location', variable, 'Vaccinations per Capita']
 ).add_selection(hover)
@@ -286,6 +286,6 @@ regression = alt.Chart(df).mark_circle(size=60).encode(
     y='Vaccinations per Capita').transform_regression('variable','Vaccinations per Capita').mark_line()  
    
                          
-st.altair_chart((scatterplot + regression).interactive(), use_container_width=True)
+st.altair_chart((scatterplot + regression).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
    
    
