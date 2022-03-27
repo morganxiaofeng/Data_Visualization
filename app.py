@@ -177,8 +177,9 @@ df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna(axis=0)
 # Define a layer to display on a map
 
-st.header('How is the situation of macroenvironmental indexes and how is related to vaccination coverage percentages?')
-st.subheader('Macroenvironmental Index Heatmap')
+st.header('How is the situation of macroenvironmental indexes and how is related to vaccinations?')
+
+st.subheader(f'Macroenvironmental Index Heatmap on {sel_date}')
 
 polygon_layer = pdk.Layer(
             "PolygonLayer",
@@ -284,7 +285,9 @@ if sel_vac != None:
 # Scatter Plot - Correlations
 
 df['Vaccinations per Capita'] = round(df['total_vaccinations']/df['population'],3).replace(np.nan,0)
-   
+
+st.subheader(f'Relationship between Vaccination per Capita and Macroenvironmental Index on {sel_date}')
+
 scatterplot = alt.Chart(df).mark_circle(size=60).encode(
     alt.X('variable', title=sel_index),
     y='Vaccinations per Capita',
