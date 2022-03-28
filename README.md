@@ -1,6 +1,6 @@
 # Data_Visualization
 # Streamlit_nCov19 (v2)
-[![Streamlit App](https://share.streamlit.io/morganxiaofeng/data_visualization/main/app.py)]
+[![Streamlit App]](https://share.streamlit.io/morganxiaofeng/data_visualization/main/app.py)
 
 Interactive Dashboard of COVID-19 Progress: Evolution of Emerging Cases & Vaccination in 2021 employing [Streamlit](https://www.streamlit.io) module .
 You can try [here](https://share.streamlit.io/morganxiaofeng/data_visualization/main/app.py).
