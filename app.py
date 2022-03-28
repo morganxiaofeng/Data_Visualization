@@ -113,8 +113,8 @@ color_range = [
 # Hover setting
 hover = alt.selection_single(fields=['Continent'], on='mouseover', nearest=True, init={'Continent': sel_region})
 if sel_region == 'World':
-    colorvac = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'), title='Month AVG of New Vaccinations')
-    colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'), title='Month AVG of New Cases')
+    colorvac = alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues'), title='New Vaccinations (AVG)')
+    colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'), title='New Cases (AVG)')
     opacity = alt.value(1)
 else:
     colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='New Vaccinations (AVG)')
