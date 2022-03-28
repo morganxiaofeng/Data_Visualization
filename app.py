@@ -43,11 +43,11 @@ def display_sidebar(data):
     
     # 4) Compare with Macroenvironmental Index?
     if sel_index:
-        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Vaccinated Twice (Fully) Coverage and Vaccinated Once Coverage)?')
+        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Vaccinated Fully Coverage and Vaccinated Once Coverage)?')
         check = st.sidebar.checkbox('Yes')
         if check:
             st.sidebar.markdown('Choose a stage of the vaccination (e.g., Booster Coverage)')
-            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Vaccinated Twice (Fully) Coverage', 'Vaccinated Once Coverage'])
+            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Vaccinated Fully Coverage', 'Vaccinated Once Coverage'])
         else:
             sel_vac = None
      
@@ -250,8 +250,8 @@ df_vac['coordinates'] = df_vac['location'].apply(lambda x: [coord_dict[x][1],coo
 
 df_vac['Booster Coverage'] = (df_vac['total_boosters']/df_vac['people_vaccinated']).replace(np.nan,0)
 df_vac['booster'] = max_scale(df_vac['Booster Coverage'])
-df_vac['Vaccinated Twice (Fully) Coverage'] = ((df_vac['people_fully_vaccinated']-df_vac['total_boosters'])/df_vac['people_vaccinated']).replace(np.nan,0)
-df_vac['fully'] = max_scale(df_vac['Vaccinated Twice (Fully) Coverage'])
+df_vac['Vaccinated Fully Coverage'] = ((df_vac['people_fully_vaccinated']-df_vac['total_boosters'])/df_vac['people_vaccinated']).replace(np.nan,0)
+df_vac['fully'] = max_scale(df_vac['Vaccinated Fully Coverage'])
 df_vac['Vaccinated Once Coverage'] = ((df_vac['people_vaccinated']-df_vac['people_fully_vaccinated'])/df_vac['people_vaccinated']).replace(np.nan,0)
 df_vac['once'] = max_scale(df_vac['Vaccinated Once Coverage'])
 
@@ -259,7 +259,7 @@ df_vac['once'] = max_scale(df_vac['Vaccinated Once Coverage'])
 df_vac = df_vac.loc[df_vac.date == np.datetime64(sel_date)]
 df_vac = df_vac.dropna(axis=0)
 
-df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['Booster Coverage','Vaccinated Twice (Fully) Coverage','Vaccinated Once Coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
+df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['Booster Coverage','Vaccinated Fully Coverage','Vaccinated Once Coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
 df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
 
 st.subheader(f'Vaccination Coverage Pertancages per Dose on {sel_date} in Different Continents')
@@ -268,21 +268,23 @@ bars = alt.Chart(df_vac_melt).mark_bar().encode(
     x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
     y=alt.Y('Continent'),
     color=alt.Color('Stage of Vaccination'),
-    opacity=opacity
+    opacity=opacity,
+    tooltip=['Stage of Vaccination','Continent','Coverage%']
     ).add_selection(hover)
 
-
+'''
 text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
     x=alt.X('Coverage%', stack='zero'),
     y=alt.Y('Continent'),
     detail='Stage of Vaccination:N',
     text=alt.Text('Coverage%', format='.1f'))
+'''
 
 st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
 
 
 if sel_vac != None:
-    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Vaccinated Twice (Fully) Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated Once Coverage']}
+    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Vaccinated Fully Coverage': ['fully', 'Vaccinated Fully Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated Once Coverage']}
     variable_vac = vac_dict[sel_vac][0]
     df_vac['variable_vac'] = round(df_vac[vac_dict[sel_vac][1]]*100, 2)
     df_vac['vac'] = sel_vac
