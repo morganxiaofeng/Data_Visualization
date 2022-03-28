@@ -12,7 +12,7 @@ You can try [here](https://share.streamlit.io/morganxiaofeng/data_visualization/
 * Draw scatter plots of relationships between vaccinations per capita and indexes
 
 ## Data sources and helpful resources
-* [locations](https://github.com/owid/covid-19-data/blob/master/public/data/vaccinations/locations.csv)
+* [Locations](https://github.com/owid/covid-19-data/blob/master/public/data/vaccinations/locations.csv)
 * [Global vaccinations and cases](https://github.com/owid/covid-19-data/blob/master/public/data/owid-covid-data.csv)
 
   
