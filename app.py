@@ -168,7 +168,7 @@ st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=
 
 # Heatmap
 st.header('Regional Analysis')
-st.subheader('Monthly Revolution of New Vaccinations Smoothed in 2021')
+st.subheader('Monthly Evolution of New Vaccinations Smoothed in 2021')
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
@@ -180,7 +180,7 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
 
 st.altair_chart(vac_heatmap, use_container_width=True)
 
-st.subheader('Monthly Revolution of New Cases Smoothed in 2021')
+st.subheader('Monthly Evolution of New Cases Smoothed in 2021')
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
@@ -284,7 +284,7 @@ st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive()
 if sel_vac != None:
     vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Fully-Vaccinated Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated-Once Coverage']}
     variable_vac = vac_dict[sel_vac][0]
-    df_vac['variable_vac'] = df_vac[vac_dict[sel_vac][1]]
+    df_vac['variable_vac'] = round(df_vac[vac_dict[sel_vac][1]]*100, 2)
     df_vac['vac'] = sel_vac
     
     # Define a layer to display on a map
