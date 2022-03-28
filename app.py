@@ -44,7 +44,7 @@ def display_sidebar(data):
     
     # 4) Compare with Macroenvironmental Index?
     if sel_index:
-        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Vaccinated Fully Coverage and Vaccinated Once Coverage)?')
+        st.sidebar.markdown('Draw a continent map to compare with the vaccination coverage (Booster Coverage, Vaccinated Fully Coverage and Vaccinated Once Coverage)?')
         check = st.sidebar.checkbox('Yes')
         if check:
             st.sidebar.markdown('Choose a stage of the vaccination (e.g., Booster Coverage)')
