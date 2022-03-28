@@ -49,7 +49,7 @@ def display_sidebar(data):
         check = st.sidebar.checkbox('Yes')
         if check:
             st.sidebar.markdown('Choose a stage of the vaccination (e.g., Booster Coverage)')
-            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Vaccinated Twice (Fully) Coverage'', 'Vaccinated Once Coverage'])
+            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Vaccinated Twice (Fully) Coverage', 'Vaccinated Once Coverage'])
         else:
             sel_vac = None
      
