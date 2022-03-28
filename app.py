@@ -45,11 +45,11 @@ def display_sidebar(data):
     
     # 4) Compare with Macroenvironmental Index?
     if sel_index:
-        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Fully-Vaccinated Coverage and Vaccinated-Once Coverage)?')
+        st.sidebar.markdown('Draw a map to compare with the vaccination coverage (Booster Coverage, Vaccinated Twice (Fully) Coverage and Vaccinated Once Coverage)?')
         check = st.sidebar.checkbox('Yes')
         if check:
             st.sidebar.markdown('Choose a stage of the vaccination (e.g., Booster Coverage)')
-            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Fully-Vaccinated Coverage', 'Vaccinated-Once Coverage'])
+            sel_vac = st.sidebar.selectbox('Stage of Vaccination', ['Booster Coverage', 'Vaccinated Twice (Fully) Coverage'', 'Vaccinated Once Coverage'])
         else:
             sel_vac = None
      
@@ -282,7 +282,7 @@ st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive()
 
 
 if sel_vac != None:
-    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Fully-Vaccinated Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated-Once Coverage']}
+    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Vaccinated Twice (Fully) Coverage'': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated Once Coverage']}
     variable_vac = vac_dict[sel_vac][0]
     df_vac['variable_vac'] = round(df_vac[vac_dict[sel_vac][1]]*100, 2)
     df_vac['vac'] = sel_vac
