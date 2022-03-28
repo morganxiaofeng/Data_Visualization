@@ -321,7 +321,7 @@ st.subheader(f'Relationship between Vaccination per Capita and Macroenvironmenta
 
 scatterplot = alt.Chart(df).mark_circle(size=60).encode(
     alt.X('variable', title=sel_index),
-    y='Vaccinations per Capita',
+    alt.Y('Vaccinations per Capita', title='Cumulated Total Vaccinations per Capita')
     color='Continent',
     opacity=opacity,
     tooltip=[alt.Tooltip('location', title="Country"), alt.Tooltip('variable', title=sel_index), 'Vaccinations per Capita']
