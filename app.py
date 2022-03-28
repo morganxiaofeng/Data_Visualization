@@ -27,16 +27,17 @@ def display_sidebar(data):
     # 1) Choose a Region/Country to display
     st.sidebar.markdown('Choose a Continent (e.g., Europe)')
     
-    sel_region = st.sidebar.selectbox('Continent',['World', 'Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'])
+    sel_region = st.sidebar.selectbox('Continent:',['World', 'Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'])
 
     # 2) Choose a Macroenvironmental Index
+    st.sidebar.header('Regional Analysis)
     st.sidebar.markdown('Choose a Macroenvironmental Index (e.g., Stringency Index)')
     
-    sel_index = st.sidebar.selectbox('Macroenvironmental Index', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
+    sel_index = st.sidebar.selectbox('Macroenvironmental Index:', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
         
     # 3) Choose a date to display
-    st.sidebar.header('Choose a date in Year 2021 below')
-    st.sidebar.markdown('Choose a date (e.g., 2020-08-15)')
+    
+    st.sidebar.markdown('Choose a date in 2021 (e.g., 2020-08-15)')
     sel_date = st.sidebar.date_input('Date:', datetime.date(2021,12,31))
     if sel_date > datetime.date(2021,12,31) and sel_date < datetime.date(2021,1,1):
         st.error('Error: The date should be in Year 2021.')
@@ -54,9 +55,7 @@ def display_sidebar(data):
     return sel_region, sel_index, sel_date, sel_vac
 
 
-
 sel_region, sel_index, sel_date, sel_vac = display_sidebar(data)
-
 
 ###########################################################
 
