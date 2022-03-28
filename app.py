@@ -280,7 +280,7 @@ text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
     text=alt.Text('Coverage%', format='.1f'))
 '''
 
-st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
+st.altair_chart(bars.configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
 
 
 if sel_vac != None:
