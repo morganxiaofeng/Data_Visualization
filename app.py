@@ -272,13 +272,6 @@ bars = alt.Chart(df_vac_melt).mark_bar().encode(
     tooltip=['Stage of Vaccination','Continent','Coverage%']
     ).add_selection(hover)
 
-'''
-text = alt.Chart(df_vac_melt).mark_text(dx=-10, dy=3, color='white').encode(
-    x=alt.X('Coverage%', stack='zero'),
-    y=alt.Y('Continent'),
-    detail='Stage of Vaccination:N',
-    text=alt.Text('Coverage%', format='.1f'))
-'''
 
 st.altair_chart(bars.configure_scale(bandPaddingInner=.1).interactive(), use_container_width=True)
 
