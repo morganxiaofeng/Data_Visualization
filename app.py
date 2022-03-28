@@ -12,6 +12,8 @@ import datetime
 
 data = pd.read_csv('owid-covid-data_final.csv')
 
+st.header('COVID-19 Progress: Evolution of Emerging Cases & Vaccination in 2021')
+
 def display_sidebar(data):
     sel_region,sel_index,sel_date,sel_vac = None, None, None, None
 
