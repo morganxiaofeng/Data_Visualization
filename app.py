@@ -35,7 +35,7 @@ def display_sidebar(data):
     sel_index = st.sidebar.selectbox('Macroenvironmental Index', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
         
     # 3) Choose a date to display
-    st.sidebar.header('Choose a date below')
+    st.sidebar.header('Choose a date in Year 2021 below')
     st.sidebar.markdown('Choose a date (e.g., 2020-08-15)')
     sel_date = st.sidebar.date_input('Date:', datetime.date(2021,12,31))
     if sel_date > datetime.date(2021,12,31) and sel_date < datetime.date(2021,1,1):
@@ -206,9 +206,9 @@ df = df.loc[df.date == np.datetime64(sel_date)]
 df = df.dropna(axis=0)
 # Define a layer to display on a map
 
-st.success(f'Date: {sel_date}')
-
 st.header('How is the situation of macroenvironmental indexes and how is related to vaccinations?')
+
+st.success(f'Date: {sel_date}')
 
 st.subheader(f'Macroenvironmental Index Heatmap on {sel_date}')
 
