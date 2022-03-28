@@ -38,9 +38,7 @@ def display_sidebar(data):
     st.sidebar.header('Choose a date below')
     st.sidebar.markdown('Choose a date (e.g., 2020-08-15)')
     sel_date = st.sidebar.date_input('Date:', datetime.date(2021,12,31))
-    if sel_date <= datetime.date(2021,12,31) and sel_date >= datetime.date(2021,1,1):
-        continue
-    else:
+    if sel_date > datetime.date(2021,12,31) and sel_date < datetime.date(2021,1,1):
         st.error('Error: The date should be in Year 2021.')
     
     # 4) Compare with Macroenvironmental Index?
