@@ -117,8 +117,8 @@ if sel_region == 'World':
     colorcas = alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues'), title='Month AVG of New Cases')
     opacity = alt.value(1)
 else:
-    colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='Month AVG of New Vaccinations')
-    colorcas = alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='Month AVG of New Cases')
+    colorvac = alt.condition(hover, alt.Color('mean(New Vaccinations Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='New Vaccinations (AVG)')
+    colorcas = alt.condition(hover, alt.Color('mean(New Cases Smoothed):Q',scale=alt.Scale(scheme='blues')), alt.value('lightgray'), title='New Cases (AVG)')
     opacity = alt.condition(hover, alt.value(1.0), alt.value(0.05))
 ###########################################################
 
@@ -168,7 +168,7 @@ st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=
 
 # Heatmap
 st.header('Regional Analysis')
-st.subheader('Monthly Revolution of New Vaccinations & Cases Smoothed in 2021')
+st.subheader('Monthly Revolution of New Vaccinations Smoothed in 2021')
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
@@ -178,6 +178,9 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).add_selection(hover).interactive()
 
+st.altair_chart(vac_heatmap.configure_scale(bandPaddingInner=.1), use_container_width=True)
+
+st.subheader('Monthly Revolution of New Cases Smoothed in 2021')
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
@@ -186,7 +189,7 @@ case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
                                 ).add_selection(hover).interactive()
 
-st.altair_chart(alt.vconcat(vac_heatmap,case_heatmap).configure_scale(bandPaddingInner=.1), use_container_width=True)
+st.altair_chart(case_heatmap.configure_scale(bandPaddingInner=.1), use_container_width=True)
 
 
 # Macroenvironmental geo map
