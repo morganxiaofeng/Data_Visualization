@@ -30,7 +30,7 @@ def display_sidebar(data):
     sel_region = st.sidebar.selectbox('Continent:',['World', 'Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'])
 
     # 2) Choose a Macroenvironmental Index
-    st.sidebar.header('Regional Analysis)
+    st.sidebar.header('Regional Analysis')
     st.sidebar.markdown('Choose a Macroenvironmental Index (e.g., Stringency Index)')
     
     sel_index = st.sidebar.selectbox('Macroenvironmental Index:', ['Stringency Index', 'GDP per Capita', 'Human Development Index'])
