@@ -140,7 +140,7 @@ area = alt.Chart(df_vac_case).mark_area().encode(
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip('New Cases Smoothed',title='New Confirmed Cases')]
-).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+).configure_scale(bandPaddingInner=.1).add_selection(hover)
 
 st.altair_chart(area, use_container_width=True)
 
@@ -154,7 +154,7 @@ line_vac = alt.Chart(df_vac_case).mark_line().encode(
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_vaccinations", title='Total Vaccinations')]
-    ).add_selection(hover).interactive()
+    ).add_selection(hover)
 
 line_cas = alt.Chart(df_vac_case).mark_line().encode(
     x="Date:T",
@@ -162,7 +162,7 @@ line_cas = alt.Chart(df_vac_case).mark_line().encode(
     color="Continent:N",
     opacity=opacity,
     tooltip=['Continent','Date', alt.Tooltip("total_cases", title='Total Cases')]
-    ).add_selection(hover).interactive()
+    ).add_selection(hover)
 
 st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=.1), use_container_width=True)
 
