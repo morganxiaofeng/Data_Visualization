@@ -282,7 +282,7 @@ st.altair_chart((bars + text).configure_scale(bandPaddingInner=.1).interactive()
 
 
 if sel_vac != None:
-    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Vaccinated Twice (Fully) Coverage'': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated Once Coverage']}
+    vac_dict = {'Booster Coverage': ['booster', 'Booster Coverage'], 'Vaccinated Twice (Fully) Coverage': ['fully', 'Vaccinated Twice (Fully) Coverage'], 'Vaccinated Once Coverage': ['once', 'Vaccinated Once Coverage']}
     variable_vac = vac_dict[sel_vac][0]
     df_vac['variable_vac'] = round(df_vac[vac_dict[sel_vac][1]]*100, 2)
     df_vac['vac'] = sel_vac
