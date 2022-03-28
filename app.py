@@ -168,7 +168,7 @@ st.altair_chart(alt.vconcat(line_vac,line_cas).configure_scale(bandPaddingInner=
 
 # Heatmap
 st.header('Regional Analysis')
-st.subheader('Monthly Revolution of New Vaccinations Smoothed in 2021')
+st.subheader('Monthly Revolution of New Vaccinations & Cases Smoothed in 2021')
 
 vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
@@ -176,20 +176,17 @@ vac_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 color=colorvac,
                                 opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
-                                ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+                                ).add_selection(hover).interactive()
 
-st.altair_chart(vac_heatmap, use_container_width=True)
-
-st.subheader('Monthly Revolution of New Cases Smoothed in 2021')
 case_heatmap = alt.Chart(df_vac_case).mark_rect().encode(
                                 x=alt.X('month(Date):O', sort=dates),
                                 y=alt.Y('Continent'),
                                 color=colorcas,
                                 opacity=opacity,
                                 tooltip=['Continent', 'Date', 'New Vaccinations Smoothed', 'New Cases Smoothed']
-                                ).configure_scale(bandPaddingInner=.1).add_selection(hover).interactive()
+                                ).add_selection(hover).interactive()
 
-st.altair_chart(case_heatmap, use_container_width=True)
+st.altair_chart(alt.vconcat(vac_heatmap,case_heatmap).configure_scale(bandPaddingInner=.1), use_container_width=True)
 
 
 # Macroenvironmental geo map
