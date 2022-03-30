@@ -261,7 +261,7 @@ df_vac = df_vac.dropna(axis=0)
 df_vac_melt = pd.melt(df_vac.reset_index(), id_vars=['location'], value_vars=['Booster Coverage','Vaccinated Fully Coverage','Vaccinated Once Coverage']).rename(columns={'variable': 'Stage of Vaccination', 'value': 'Coverage%', 'location': 'Continent'})
 df_vac_melt['Coverage%'] = df_vac_melt['Coverage%'].apply(lambda x: round(x*100,2))
 
-st.subheader(f'Vaccination Coverage Pertancages per Dose on {sel_date} in Different Continents')
+st.subheader(f'Vaccination Coverage Percentages per Dose on {sel_date} in Different Continents')
 
 bars = alt.Chart(df_vac_melt).mark_bar().encode(
     x=alt.X('Coverage%', stack='zero', scale=alt.Scale(domain=(0, 100))),
